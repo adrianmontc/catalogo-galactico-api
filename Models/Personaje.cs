@@ -1,4 +1,4 @@
-﻿namespace CatalogoGalactico.Models;
+﻿namespace ApiCatalogo_Galactico.Models;
 public class Personaje
 {
     public int Id { get; init; }
