@@ -137,7 +137,7 @@ public class EventoService
             if (personaje.Estado == "muerto" &&
                 personaje.AnioMuerte.HasValue &&
                 personaje.AnioMuerte.Value < dto.Anio &&
-                personaje.Anio != evento.Anio)
+                personaje.AnioMuerte.Value != evento.Anio)
             {
                 return $"El personaje {personaje.Nombre} ya había muerto antes de este evento.";
             }
