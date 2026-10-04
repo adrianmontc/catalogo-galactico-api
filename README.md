@@ -21,7 +21,7 @@ El sistema funciona completamente en memoria donde se estructura una Minimal API
 
 El proyecto mantiene una separacion directa de responsabilidades para no mezclar la logica con el enrutamiento:
 
-Data       - Colecciones de datos en memoria, basicos.
-Models     - Entidades de dominio y DTOs.
-Services   - Logica de negocio, validaciones y simulaciones.
-Endpoints  - Mapeo de rutas y configuracion HTTP.
+- Data      : Colecciones de datos en memoria, basicos.
+- Models    : Entidades de dominio y DTOs.
+- Services  : Logica de negocio, validaciones y simulaciones.
+- Endpoints : Mapeo de rutas y configuracion HTTP.
