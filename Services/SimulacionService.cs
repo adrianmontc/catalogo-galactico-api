@@ -36,7 +36,7 @@ public class SimulacionService
         var facciones = datos.Select(x => x.Faccion).Distinct().ToList();
 
         if (facciones.Count < 2)
-            return (null, "La simulación necesita participantes de al menos dos facciones diferentes.");
+            return (null, "La simulacion necesita participantes de al menos dos facciones diferentes.");
 
         var poderPorFaccion = datos
             .GroupBy(x => x.Faccion)
@@ -54,7 +54,7 @@ public class SimulacionService
             .First()
             .Key;
 
-        var criterio = $"Se sumó el poder de las cartas por facción y se aplicó un factor aleatorio acotado entre 0.90 y 1.10. La facción con mayor poder ajustado gana: {ganador}.";
+        var criterio = $"Se sumo el poder de las cartas por faccion y se aplico un factor aleatorio acotado entre 0.90 y 1.10. La faccion con mayor poder ajustado gana: {ganador}.";
 
         return (
             new ResultadoSimulacion(
