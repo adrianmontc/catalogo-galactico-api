@@ -67,5 +67,29 @@ public static class PersonajeEndpoints
         .Produces<CardPersonaje>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound);
 
+        group.MapGet("/{id:int}/eventos", (int id, PersonajeService personajeService, EventoService eventoService) =>
+        {
+            if (personajeService.Obtener(id) is null)
+                return Results.NotFound("Personaje no encontrado.");
+
+            return Results.Ok(eventoService.ObtenerEventosDePersonaje(id));
+        })
+        .WithName("GetEventosDePersonaje")
+        .WithSummary("Lista los eventos en los que participó un personaje")
+        .Produces<IEnumerable<Evento>>(StatusCodes.Status200OK)
+        .Produces(StatusCodes.Status404NotFound);
+
+        group.MapPost("/", (CrearPersonajeDto dto, PersonajeService service) =>
+        {
+            var error = service.Crear(dto, out var personaje);
+
+            return error is null
+                ? Results.Created($"/personajes/{personaje!.Id}", personaje)
+                : Results.BadRequest(error);
+        })
+        .WithName("CreatePersonaje")
+        .WithSummary("Crea un personaje")
+        .Produces<Personaje>(StatusCodes.Status201Created)
+        .Produces(StatusCodes.Status400BadRequest);
     }
 }
