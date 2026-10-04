@@ -96,5 +96,42 @@ public static class EventoEndpoints
         .WithSummary("Crea un evento y aplica las reglas temporales de participación")
         .Produces<Evento>(StatusCodes.Status201Created)
         .Produces(StatusCodes.Status400BadRequest);
+
+        group.MapPut("/{id:int}", (int id, ActualizarEventoDto dto, EventoService service) =>
+        {
+            var error = service.Actualizar(id, dto);
+
+            if (error == "NO_ENCONTRADO")
+                return Results.NotFound("Evento no encontrado.");
+
+            return error is null
+                ? Results.Ok(service.Obtener(id))
+                : Results.BadRequest(error);
+        })
+        .WithName("UpdateEvento")
+        .WithSummary("Actualiza un evento y sus relaciones")
+        .Produces<Evento>(StatusCodes.Status200OK)
+        .Produces(StatusCodes.Status400BadRequest)
+        .Produces(StatusCodes.Status404NotFound);
+
+        group.MapPost("/{id:int}/simular", (int id, EventoService eventoService, SimulacionService simulacionService) =>
+        {
+            var evento = eventoService.Obtener(id);
+
+            if (evento is null)
+                return Results.NotFound("Evento no encontrado.");
+
+            var (resultado, error) = simulacionService.Simular(evento);
+
+            return error is not null
+                ? Results.BadRequest(error)
+                : Results.Ok(resultado);
+        })
+        .WithName("SimularEvento")
+        .WithSummary("Simula el resultado del evento")
+        .WithDescription("Calcula poder por facción, aplica un factor aleatorio acotado y devuelve una explicación.")
+        .Produces<ResultadoSimulacion>(StatusCodes.Status200OK)
+        .Produces(StatusCodes.Status400BadRequest)
+        .Produces(StatusCodes.Status404NotFound);
     }
 }
