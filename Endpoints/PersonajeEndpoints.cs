@@ -91,5 +91,39 @@ public static class PersonajeEndpoints
         .WithSummary("Crea un personaje")
         .Produces<Personaje>(StatusCodes.Status201Created)
         .Produces(StatusCodes.Status400BadRequest);
+
+        group.MapPut("/{id:int}", (int id, ActualizarPersonajeDto dto, PersonajeService service) =>
+        {
+            var error = service.Actualizar(id, dto);
+
+            if (error == "NO_ENCONTRADO")
+                return Results.NotFound("Personaje no encontrado.");
+
+            return error is null
+                ? Results.Ok(service.Obtener(id))
+                : Results.BadRequest(error);
+        })
+        .WithName("UpdatePersonaje")
+        .WithSummary("Actualiza un personaje")
+        .Produces<Personaje>(StatusCodes.Status200OK)
+        .Produces(StatusCodes.Status400BadRequest)
+        .Produces(StatusCodes.Status404NotFound);
+
+        group.MapDelete("/{id:int}", (int id, PersonajeService service) =>
+        {
+            var error = service.Eliminar(id);
+
+            if (error == "NO_ENCONTRADO")
+                return Results.NotFound("Personaje no encontrado.");
+
+            return error is null
+                ? Results.NoContent()
+                : Results.Conflict(error);
+        })
+        .WithName("DeletePersonaje")
+        .WithSummary("Elimina un personaje sin relaciones")
+        .Produces(StatusCodes.Status204NoContent)
+        .Produces(StatusCodes.Status404NotFound)
+        .Produces(StatusCodes.Status409Conflict);
     }
 }
