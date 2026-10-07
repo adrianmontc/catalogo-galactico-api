@@ -2,6 +2,7 @@ using ApiCatalogo_Galactico.Endpoints;
 using ApiCatalogo_Galactico.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+
 builder.Services.AddOpenApi();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
@@ -21,6 +22,14 @@ Ademas, incluye logica de negocio avanzada para la simulacion de batallas, calcu
     });
 });
 
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+        policy.WithOrigins("http://localhost:5173")
+              .AllowAnyHeader()
+              .AllowAnyMethod());
+});
+
 builder.Services.AddSingleton<PersonajeService>();
 builder.Services.AddSingleton<CardService>();
 builder.Services.AddSingleton<EventoService>();
@@ -29,8 +38,10 @@ builder.Services.AddSingleton<SimulacionService>();
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
+app.UseCors();
+
+//if (app.Environment.IsDevelopment())
+//{
     app.MapOpenApi();
 
     app.UseSwagger();
@@ -40,12 +51,12 @@ if (app.Environment.IsDevelopment())
         options.SwaggerEndpoint("/swagger/v1/swagger.json", "Catalogo galactico API v1");
         options.RoutePrefix = "swagger";
     });
-}
+//}
 
 app.MapGet("/", () => Results.Redirect("/swagger"))
     .ExcludeFromDescription();
 
-var api = app.MapGroup("/api");
+var api = app.MapGroup("/");
 
 api.MapPersonajeEndpoints();
 api.MapCardEndpoints();

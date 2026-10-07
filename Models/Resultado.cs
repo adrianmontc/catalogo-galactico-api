@@ -35,3 +35,8 @@ public record MvpEvento(
     int Poder,
     string HabilidadEspecial
 );
+
+public record PersonajeConCard(
+    Personaje Personaje,
+    CardPersonaje Card
+);

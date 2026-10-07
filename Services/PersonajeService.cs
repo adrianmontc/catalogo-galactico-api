@@ -34,7 +34,9 @@ public class PersonajeService
             dto.Faccion,
             dto.Afiliacion,
             dto.Estado,
-            dto.AnioMuerte);
+            dto.AnioMuerte,
+            dto.ImagenUrl
+            );
 
         if (error is not null)
             return error;
@@ -48,7 +50,8 @@ public class PersonajeService
             Afiliacion = dto.Afiliacion.Trim(),
             Estado = dto.Estado,
             FuerzaSensitivo = dto.FuerzaSensitivo,
-            AnioMuerte = dto.AnioMuerte
+            AnioMuerte = dto.AnioMuerte,
+            ImagenUrl = dto.ImagenUrl.Trim()
         };
 
         GalaxiaData.Personajes.Add(personaje);
@@ -68,7 +71,9 @@ public class PersonajeService
             dto.Faccion,
             dto.Afiliacion,
             dto.Estado,
-            dto.AnioMuerte);
+            dto.AnioMuerte,
+            dto.ImagenUrl
+            );
 
         if (error is not null)
             return error;
@@ -80,6 +85,7 @@ public class PersonajeService
         personaje.Estado = dto.Estado;
         personaje.FuerzaSensitivo = dto.FuerzaSensitivo;
         personaje.AnioMuerte = dto.AnioMuerte;
+        personaje.ImagenUrl = dto.ImagenUrl.Trim();
 
         return null;
     }
@@ -127,5 +133,20 @@ public class PersonajeService
 
         personaje.Estado = "muerto";
         personaje.AnioMuerte = anioMuerte;
+    }
+
+    public PersonajeConCard? ObtenerConCard(int id)
+    {
+        var personaje = GalaxiaData.Personajes.FirstOrDefault(p => p.Id == id);
+
+        if (personaje is null)
+            return null;
+
+        var card = GalaxiaData.Cards.FirstOrDefault(c => c.PersonajeId == id);
+
+        if (card is null)
+            return null;
+
+        return new PersonajeConCard(personaje, card);
     }
 }

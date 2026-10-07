@@ -5,7 +5,7 @@ public static class ValidacionService
     public static readonly string[] Facciones = ["Rebelde", "Imperio", "Neutral"];
     public static readonly string[] Estados = ["vivo", "muerto", "desconocido"];
 
-    public static string? ValidarPersonaje(string nombre,string especie,string faccion,string afiliacion,string estado,int? anioMuerte)
+    public static string? ValidarPersonaje(string nombre,string especie,string faccion,string afiliacion,string estado,int? anioMuerte,string imagenUrl)
     {
         if (string.IsNullOrWhiteSpace(nombre))
             return "El nombre es obligatorio.";
@@ -27,6 +27,9 @@ public static class ValidacionService
 
         if (estado != "muerto" && anioMuerte is not null)
             return "Anio de muerte solo puede existir cuando el estado es muerto.";
+
+        if (string.IsNullOrWhiteSpace(imagenUrl))
+            return "La URL de la imagen es obligatoria.";
 
         return null;
     }
