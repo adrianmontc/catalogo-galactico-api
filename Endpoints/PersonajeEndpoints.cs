@@ -44,6 +44,19 @@ public static class PersonajeEndpoints
         .Produces<IEnumerable<RankingPersonaje>>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status400BadRequest);
 
+        group.MapGet("/{id:int}/con-card", (int id, PersonajeService service) =>
+        {
+            var resultado = service.ObtenerConCard(id);
+
+            return resultado is null
+                ? Results.NotFound("El personaje o su carta no existe.")
+                : Results.Ok(resultado);
+        })
+        .WithName("GetPersonajeConCard")
+        .WithSummary("Obtiene un personaje junto con su carta")
+        .Produces<PersonajeConCard>(StatusCodes.Status200OK)
+        .Produces(StatusCodes.Status404NotFound);
+
         group.MapGet("/{id:int}", (int id, PersonajeService service) =>
         {
             var personaje = service.Obtener(id);

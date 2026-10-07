@@ -9,4 +9,5 @@ public class Personaje
     public string Estado { get; set; } = string.Empty;
     public bool FuerzaSensitivo { get; set; }
     public int? AnioMuerte { get; set; }
+    public string ImagenUrl { get; set; } = string.Empty;
 }
